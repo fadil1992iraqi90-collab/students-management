@@ -1,14 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+
+<html dir="rtl" lang="ar">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#1f6fbf">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="إدارة التلاميذ">
-  <link rel="manifest" href="manifest.json">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<link rel="manifest" href="./manifest.webmanifest"/>
 <title>نظام إدارة بيانات التلاميذ</title>
 <style>
 :root{--bg:#eaf2fb;--card:#fff;--tx:#1b2a3a;--bd:#9db7d3;--blue:#1f6fbf;--head:#cfe3f7;--in:#fff;--okc:#c9f0c9;--badc:#f8c9c9;--selc:#cfe3ff;
@@ -47,68 +43,121 @@ ul{margin:0;padding:8px 24px;font-size:13px;line-height:1.8}
 textarea{text-align:left;direction:ltr;height:110px;font-size:12px}
 body.pr .app>*:not(#repcard),body.pr header,body.pr #repcard .in>:not(#rep){display:none!important}body.pr .card{border:0}
 #back{display:none;position:fixed;top:calc(8px + env(safe-area-inset-top,0px));left:8px;z-index:9}body.pr #back{display:block}
-@media print{#back{display:none!important}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+@page{size:A4 landscape;margin:7mm}
+@media print{
+  #back{display:none!important}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body.pr{background:#fff!important;font-size:8px!important}
+  body.pr .app{max-width:none!important;width:100%!important;padding:0!important;margin:0!important}
+  body.pr #repcard{width:100%!important;margin:0!important;padding:0!important}
+  body.pr #rep{width:100%!important;max-width:none!important;overflow:visible!important;margin:0!important;padding:0!important}
+  body.pr #rep table{width:100%!important;min-width:0!important;max-width:none!important;table-layout:auto!important;font-size:16px!important}
+  body.pr #rep th{padding:2px 3px!important;white-space:nowrap!important;font-size:18px!important;font-weight:bold!important}
+  body.pr #rep .fullReport .statRow td{font-size:15px!important;font-weight:bold!important;background:#fff!important;color:#111!important}
+body.pr #rep .fullReport .statRow .statLabel{font-size:16px!important;font-weight:bold!important;white-space:nowrap}
+body.pr #rep .fullReport .statRow{page-break-inside:avoid}
+body.pr #rep td{padding:2px 3px!important;white-space:nowrap!important;font-size:16px!important}
+  body.pr #rep h3{font-size:18px!important;margin:4px 0!important}
+  body.pr #rep p{font-size:18px!important;margin:4px 0!important}
+  body.pr #rep .card{width:100%!important;break-inside:avoid;page-break-inside:avoid}
+  body.pr #rep .st{grid-template-columns:repeat(6,1fr)!important;padding:4px!important;gap:3px!important}
+  body.pr #rep .st div{font-size:8px!important;padding:3px!important}
+  body.pr #rep .st b{font-size:13px!important}
+  body.pr #rep tr{break-inside:avoid;page-break-inside:avoid}
+}
+
+/* Final report statistics styling */
+@media print{
+  body.pr #rep .report-stats,
+  body.pr #rep .report-stats td,
+  body.pr #rep .report-stats th{
+    font-size:20px!important;
+  }
+  body.pr #rep .report-stats td,
+  body.pr #rep .report-stats th{
+    background:#d9efff!important;
+  }
+}
+
+
+/* Final statistics: light blue cells with red text */
+@media print{
+  body.pr #rep .report-stats td,
+  body.pr #rep .report-stats th{
+    font-size:20px!important;
+    background:#d9efff!important;
+    color:#d00000!important;
+    font-weight:bold!important;
+  }
+}
+
 </style>
 </head>
 <body>
 <header><h1>🎓 نظام إدارة بيانات التلاميذ</h1><small>العام الدراسي 2025 - 2026 · معاً من أجل تعليم أفضل</small></header>
 <div class="app">
-
 <div class="card"><h2>👤 إدخال بيانات التلميذ</h2><div class="in">
 <div class="g">
-<div><label>رقم التلميذ</label><input id="num" inputmode="numeric"></div>
-<div><label>اسم التلميذ</label><input id="name"></div>
+<div><label>رقم التلميذ</label><input id="num" inputmode="numeric"/></div>
+<div><label>اسم التلميذ</label><input id="name"/></div>
 <div><label>الصف</label><select id="cls"></select></div>
 <div><label>الشعبة</label><select id="sec"></select></div>
 </div>
 <p style="margin:10px 0 4px;color:var(--blue);font-weight:bold">الدرجات</p>
 <div class="g g4">
-<div><label>ت1</label><input id="t1" type="number" inputmode="decimal"></div>
-<div><label>ت2</label><input id="t2" type="number" inputmode="decimal"></div>
-<div><label>ك1</label><input id="k1" type="number" inputmode="decimal"></div>
-<div><label>ك2</label><input id="k2" type="number" inputmode="decimal"></div>
-<div><label>م ف1</label><input id="s1" readonly></div>
-<div><label>نصف السنة</label><input id="mid" type="number" inputmode="decimal"></div>
-<div><label>اذار</label><input id="adar" type="number" inputmode="decimal"></div>
-<div><label>نيسان</label><input id="nisan" type="number" inputmode="decimal"></div>
-<div><label>م ف2</label><input id="s2" readonly></div>
-<div class="full"><label>السعي السنوي</label><input id="yr" readonly></div>
+<div><label>ت1</label><input id="t1" inputmode="decimal" type="number"/></div>
+<div><label>ت2</label><input id="t2" inputmode="decimal" type="number"/></div>
+<div><label>ك1</label><input id="k1" inputmode="decimal" type="number"/></div>
+<div><label>ك2</label><input id="k2" inputmode="decimal" type="number"/></div>
+<div><label>م ف1</label><input id="s1" readonly=""/></div>
+<div><label>نصف السنة</label><input id="mid" inputmode="decimal" type="number"/></div>
+<div><label>اذار</label><input id="adar" inputmode="decimal" type="number"/></div>
+<div><label>نيسان</label><input id="nisan" inputmode="decimal" type="number"/></div>
+<div><label>م ف2</label><input id="s2" readonly=""/></div>
+<div class="full"><label>السعي السنوي</label><input id="yr" readonly=""/></div>
 </div>
 <div class="bar"><button onclick="saveS()">💾 حفظ</button><button class="gy" onclick="clr()">◇ مسح</button><button onclick="edit()">✏️ تعديل المحدد</button><button class="rd" id="del" onclick="two(this,delS,'🗑️ حذف المحدد')">🗑️ حذف المحدد</button></div>
 </div></div>
-
 <div class="card"><h2>🔍 البحث وخيارات متقدمة</h2><div class="in"><div class="g">
 <div><label>البحث في</label><select id="qf"><option value="name">اسم التلميذ</option><option value="num">رقم التلميذ</option></select></div>
-<div><label>نص البحث</label><input id="q" oninput="render()"></div>
+<div><label>نص البحث</label><input id="q" oninput="render()"/></div>
 <div><label>الصف</label><select id="fc" onchange="render()"></select></div>
 <div><label>الشعبة</label><select id="fs" onchange="render()"></select></div>
 </div>
 <div class="bar"><button class="gr" onclick="resetV()">🔄 إعادة عرض</button><button class="rd" id="delall" onclick="two(this,delAll,'🧹 حذف الكل')">🧹 حذف الكل</button></div>
 <p style="margin:8px 0 0">عدد السجلات المعروضة: <b id="cnt">0</b></p></div></div>
-
 <div class="card"><h2>☰ بيانات التلاميذ (اضغط على صف لتحديده)</h2><div class="sc" id="tb"></div></div>
-
-<div class="card"><h2>📊 إحصائيات الخلاصة</h2><div class="st">
-<div>العدد الكلي<b id="s_total">0</b></div><div>المشتركون<b id="s_part">0</b></div><div>الناجحون<b id="s_ok">0</b></div><div>الراسبون<b id="s_fail">0</b></div><div>نسبة النجاح<b id="s_rate">0%</b></div></div></div>
-
+<div class="card"><h2>📅 الإحصائيات الشهرية</h2><div class="in">
+<div class="g"><div><label>الدرجة / المعدل</label><select id="ms" onchange="monthlyStats()">
+<option value="t1">ت1</option><option value="t2">ت2</option><option value="k1">ك1</option><option value="k2">ك2</option>
+<option value="mf1">م ف1</option><option value="mid">نصف السنة</option><option value="adar">آذار</option><option value="nisan">نيسان</option><option value="mf2">م ف2</option><option value="annual">السعي السنوي</option></select></div>
+<div><label>الصف</label><select id="mc" onchange="monthlyStats()"></select></div>
+<div><label>الشعبة</label><select id="msec" onchange="monthlyStats()"></select></div></div>
+<div class="st"><div>العدد الكلي<b id="m_total">0</b></div><div>المشتركون<b id="m_part">0</b></div>
+<div>الناجحون<b id="m_ok">0</b></div><div>الراسبون<b id="m_fail">0</b></div>
+<div>الغائبون<b id="m_abs">0</b></div><div>النسبة<b id="m_rate">0%</b></div></div></div></div>
 <div class="card" id="repcard"><h2>📄 تقرير الدرجات</h2><div class="in"><div class="g">
 <div class="full"><label>نوع التقرير</label><select id="rt"><option value="all">جميع التلاميذ</option><option value="pass">الناجحون فقط</option><option value="fail">الراسبون فقط</option></select></div>
 <div><label>الصف</label><select id="rc"></select></div><div><label>الشعبة</label><select id="rs"></select></div></div>
+<p id="reportFilterInfo" style="margin:8px 0 0;text-align:center;font-weight:bold;color:var(--blue)">اختر الصف والشعبة ثم اضغط عرض التقرير</p>
 <div class="bar"><button class="rd" onclick="report()">📕 عرض التقرير</button><button class="gy" onclick="prn()">🖨️ طباعة / PDF</button></div>
-<div id="rep" class="sc" style="margin-top:8px"></div></div></div>
-
+<div class="sc" id="rep" style="margin-top:8px"></div></div></div>
 <div class="card"><h2>📥📤 استيراد وتصدير (إكسل / CSV)</h2><div class="in">
 <textarea id="csv" placeholder="للاستيراد: الصق هنا محتوى ملف CSV ثم اضغط استيراد"></textarea>
 <div class="bar"><button class="gr" onclick="exp()">📤 تصدير</button><button class="gr" onclick="imp()">📥 استيراد</button></div>
 <p style="font-size:12px;margin:6px 0 0">التصدير يكتب البيانات في الحقل أعلاه: انسخها واحفظها كنسخة احتياطية أو الصقها في إكسل.</p></div></div>
-
+<div class="card"><h2>💾 النسخ الاحتياطي والاسترجاع</h2><div class="in">
+<div class="bar"><button class="gr" onclick="backupData()">💾 نسخ احتياطي</button><button class="gy" onclick="document.getElementById('restoreFile').click()">📂 استرجاع البيانات</button></div>
+<input id="restoreFile" type="file" accept=".json,application/json" style="display:none" onchange="restoreData(this)">
+<p style="font-size:12px;margin:8px 0 0">النسخ الاحتياطي يحفظ جميع بيانات التلاميذ في ملف مستقل، ويمكن استرجاعه لاحقاً.</p>
+</div></div>
 <div class="card"><h2>ⓘ ملاحظات</h2><ul>
 <li>درجة النجاح من 49.5 فما فوق.</li>
 <li>معدل الفصل الأول = (ت1 + ت2 + ك1 + ك2) ÷ 4</li>
 <li>معدل الفصل الثاني = (اذار + نيسان) ÷ 2</li>
 <li>السعي السنوي = (م.فصل أول + نصف السنة + م.فصل ثان) ÷ 3</li></ul></div>
 </div>
-<button id="back" class="gy" onclick="document.body.classList.remove('pr')">↩ رجوع</button>
+<button class="gy" id="back" onclick="document.body.classList.remove('pr')">↩ رجوع</button>
 <div id="toast"></div>
 <script>
 const PASS=49.5,KEY='students_v1',CL=['الأول','الثاني','الثالث','الرابع','الخامس','السادس'],SE=['أ','ب','ج','د'];
@@ -120,48 +169,237 @@ const $=i=>document.getElementById(i);
 const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('تعذّر الحفظ في المتصفح')}};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',2500)}
-const calc=r=>{const a=(r.t1+r.t2+r.k1+r.k2)/4,b=(r.adar+r.nisan)/2;return[a,b,(a+r.mid+b)/3]};
+const calc=r=>{
+  const first=['t1','t2','k1','k2'], second=['adar','nisan'];
+  const a=first.every(k=>Number.isFinite(Number(r[k])))?first.reduce((s,k)=>s+Number(r[k]),0)/4:null;
+  const b=second.every(k=>Number.isFinite(Number(r[k])))?second.reduce((s,k)=>s+Number(r[k]),0)/2:null;
+  const y=(a!==null&&b!==null&&Number.isFinite(Number(r.mid)))?(a+Number(r.mid)+b)/3:null;
+  return[a,b,y];
+};
 function opts(id,list,all){$(id).innerHTML=(all?'<option>الكل</option>':'')+list.map(x=>`<option>${x}</option>`).join('')}
-opts('cls',CL);opts('sec',SE);opts('fc',CL,1);opts('fs',SE,1);opts('rc',CL,1);opts('rs',SE,1);$('cls').value=CL[4];
-G.forEach(k=>$(k).addEventListener('input',prev));
-function prev(){const r={};for(const k of G){const v=parseFloat($(k).value);if(isNaN(v)){['s1','s2','yr'].forEach(x=>$(x).value='');return}r[k]=v}
-const[a,b,y]=calc(r);$('s1').value=a.toFixed(1);$('s2').value=b.toFixed(1);$('yr').value=y.toFixed(1)}
-function saveS(){const r={num:$('num').value.trim(),name:$('name').value.trim(),cls:$('cls').value,sec:$('sec').value};
-if(!r.num||!r.name)return toast('أدخل رقم التلميذ واسمه');
-for(const k of G){const v=parseFloat($(k).value);if(isNaN(v)||v<0||v>100)return toast('الدرجات يجب أن تكون بين 0 و 100');r[k]=v}
-const i=S.findIndex(x=>x.num===r.num);i>=0?S[i]=r:S.push(r);persist();clr();render();toast('تم الحفظ ✔')}
+function initApp(){
+  opts('cls',CL);opts('sec',SE);opts('fc',CL,1);opts('fs',SE,1);opts('rc',CL,1);opts('rs',SE,1);
+  $('rc').value='الكل';$('rs').value='الكل';$('rt').value='all';
+  $('cls').value=CL[4];
+  G.forEach(k=>$(k).addEventListener('input',prev));
+  render();
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initApp);
+else initApp();
+function prev(){
+  const r={};
+  for(const k of G){
+    const raw=$(k).value.trim();
+    const v=parseFloat(raw);
+    r[k]=raw===''?null:(Number.isFinite(v)?v:null);
+  }
+  const first=['t1','t2','k1','k2'], second=['adar','nisan'];
+  const a=first.every(k=>Number.isFinite(r[k]))?first.reduce((s,k)=>s+r[k],0)/4:null;
+  const b=second.every(k=>Number.isFinite(r[k]))?second.reduce((s,k)=>s+r[k],0)/2:null;
+  const mid=Number.isFinite(r.mid)?r.mid:null;
+  const y=(a!==null&&b!==null&&mid!==null)?(a+mid+b)/3:null;
+  $('s1').value=a===null?'':Math.round(a);
+  $('s2').value=b===null?'':Math.round(b);
+  $('yr').value=y===null?'':Math.round(y);
+}
+function saveS(){
+  const r={num:$('num').value.trim(),name:$('name').value.trim(),cls:$('cls').value,sec:$('sec').value};
+  if(!r.num||!r.name)return toast('أدخل رقم التلميذ واسمه');
+  for(const k of G){
+    const raw=$(k).value.trim();
+    if(raw===''){r[k]=null;continue}
+    const v=parseFloat(raw);
+    if(!Number.isFinite(v)||v<0||v>100)return toast('الدرجات يجب أن تكون بين 0 و 100');
+    r[k]=v;
+  }
+  const i=S.findIndex(x=>x.num===r.num);
+  i>=0?S[i]=r:S.push(r);
+  persist();clr();render();toast('تم الحفظ ✔');
+}
 function clr(){['num','name',...G,'s1','s2','yr'].forEach(k=>$(k).value='');sel=null;render()}
-function edit(){const r=S.find(x=>x.num===sel);if(!r)return toast('اختر تلميذاً من الجدول أولاً');F.forEach(k=>$(k).value=r[k]);prev();scrollTo(0,0)}
+function edit(){const r=S.find(x=>x.num===sel);if(!r)return toast('اختر تلميذاً من الجدول أولاً');F.forEach(k=>$(k).value=r[k]??'');prev();scrollTo(0,0)}
 function delS(){if(!sel)return toast('اختر تلميذاً أولاً');S=S.filter(x=>x.num!==sel);sel=null;persist();render()}
 function delAll(){S=[];sel=null;persist();render()}
 function two(b,fn,label){if(b._w){clearTimeout(b._t);b._w=0;b.textContent=label;return fn()}b._w=1;b.textContent='اضغط مرة ثانية للتأكيد';b._t=setTimeout(()=>{b._w=0;b.textContent=label},3000)}
 function resetV(){$('q').value='';$('fc').value='الكل';$('fs').value='الكل';render()}
 function filt(fc,fs,q){return S.filter(r=>(fc==='الكل'||r.cls===fc)&&(fs==='الكل'||r.sec===fs)&&(!q||String(r[$('qf').value]).includes(q))).sort((a,b)=>a.num.localeCompare(b.num,undefined,{numeric:true}))}
-function tbl(rs,click){let h='<table><tr>'+H.map(x=>`<th>${x}</th>`).join('')+'</tr>';
-rs.forEach((r,i)=>{const[a,b,y]=calc(r),p=y>=PASS,g=k=>`<td class="${r[k]<50?'bad':''}">${r[k]}</td>`;
-h+=`<tr data-n="${esc(r.num)}" class="${click&&r.num===sel?'sel':''}"><td>${i+1}</td><td>${esc(r.num)}</td><td class="nm">${esc(r.name)}</td><td>${r.cls}</td><td>${r.sec}</td>${g('t1')}${g('t2')}${g('k1')}${g('k2')}<td>${a.toFixed(1)}</td>${g('mid')}${g('adar')}${g('nisan')}<td>${b.toFixed(1)}</td><td class="${p?'ok':'bad'}">${y.toFixed(1)}</td><td class="${p?'ok':'bad'}">${p?'ناجح':'راسب'}</td></tr>`});
-return h+'</table>'}
-function stats(rs,pre){const n=rs.length,ok=rs.filter(r=>calc(r)[2]>=PASS).length;
-return{n,ok}}
-function render(){const rs=filt($('fc').value,$('fs').value,$('q').value.trim());$('tb').innerHTML=tbl(rs,1);
-const{n,ok}=stats(rs);$('cnt').textContent=n;$('s_total').textContent=n;$('s_part').textContent=n;$('s_ok').textContent=ok;$('s_fail').textContent=n-ok;$('s_rate').textContent=(n?ok/n*100:0).toFixed(1)+'%'}
-$('tb').addEventListener('click',e=>{const tr=e.target.closest('tr[data-n]');if(tr){sel=tr.dataset.n;render()}});
-function report(){const t=$('rt').value;const rs=filt($('rc').value,$('rs').value,'').filter(r=>{const p=calc(r)[2]>=PASS;return t==='all'||(t==='pass'?p:!p)});
-if(!rs.length){$('rep').innerHTML='';return toast('لا توجد سجلات مطابقة')}
-const{n,ok}=stats(rs);$('rep').innerHTML=`<h3 style="text-align:center;color:var(--blue)">تقرير درجات التلاميذ - 2025 - 2026</h3>`+tbl(rs,0)+`<p><b>العدد: ${n} | الناجحون: ${ok} | الراسبون: ${n-ok} | نسبة النجاح: ${(ok/n*100).toFixed(1)}%</b></p>`}
+function absent(r,k){return r[k]===null||r[k]===undefined||r[k]===''||!Number.isFinite(Number(r[k]))}
+function arNum(v){return String(v).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]).replace(/\./g,'٫')}
+function gcell(r,k){
+  return `<td class="${absent(r,k)?'bad':(Number(r[k])<50?'bad':'')}">${absent(r,k)?'غـ':arNum(Math.round(Number(r[k])))}</td>`;
+}
+function tbl(rs,click){
+  let h='<table><tr>'+H.map(x=>`<th>${x}</th>`).join('')+'</tr>';
+  rs.forEach((r,i)=>{
+    const[a,b,y]=calc(r),p=y!==null&&y>=PASS;
+    h+=`<tr data-n="${esc(r.num)}" class="${click&&r.num===sel?'sel':''}">
+    <td>${i+1}</td><td>${esc(r.num)}</td><td class="nm">${esc(r.name)}</td><td>${r.cls}</td><td>${r.sec}</td>
+    ${gcell(r,'t1')}${gcell(r,'t2')}${gcell(r,'k1')}${gcell(r,'k2')}
+    <td>${a===null?'':arNum(Math.round(a))}</td>${gcell(r,'mid')}${gcell(r,'adar')}${gcell(r,'nisan')}
+    <td>${b===null?'':arNum(Math.round(b))}</td>
+    <td class="${y===null?'':(p?'ok':'bad')}">${y===null?'':arNum(Math.round(y))}</td>
+    <td class="${y===null?'bad':(p?'ok':'bad')}">${y===null?'':(p?'ناجح':'راسب')}</td></tr>`;
+  });
+  return h+'</table>';
+}
+function stats(rs){
+  const n=rs.length,ok=rs.filter(r=>{const y=calc(r)[2];return y!==null&&y>=PASS}).length;
+  return{n,ok};
+}
+const MONTHS={t1:'ت1',t2:'ت2',k1:'ك1',k2:'ك2',mf1:'م ف1',mid:'نصف السنة',adar:'آذار',nisan:'نيسان',mf2:'م ف2',annual:'السعي السنوي'};
+function statValue(r,k){
+  if(k==='mf1')return calc(r)[0];
+  if(k==='mf2')return calc(r)[1];
+  if(k==='annual')return calc(r)[2];
+  return r[k];
+}
+function monthStats(rs,k){
+  const vals=rs.map(r=>statValue(r,k));
+  const part=vals.filter(v=>Number.isFinite(Number(v))).length;
+  const ok=vals.filter(v=>Number.isFinite(Number(v))&&Number(v)>=PASS).length;
+  const total=rs.length;
+  return{total,part,ok,fail:part-ok,abs:total-part,rate:part?ok/part*100:0};
+}
+function render(){
+  const rs=filt($('fc').value,$('fs').value,$('q').value.trim());
+  $('tb').innerHTML=tbl(rs,1);
+  const{n}=stats(rs);
+  $('cnt').textContent=n;
+  if($('m_total')) monthlyStats();
+}
+$('tb').addEventListener('click',e=>{
+  const tr=e.target.closest('tr[data-n]');
+  if(tr){sel=tr.dataset.n;render()}
+});
+function monthlyStats(){
+  if(!$('ms'))return;
+  const rs=filt($('mc').value,$('msec').value,'');
+  const s=monthStats(rs,$('ms').value);
+  $('m_total').textContent=s.total;$('m_part').textContent=s.part;
+  $('m_ok').textContent=s.ok;$('m_fail').textContent=s.fail;
+  $('m_abs').textContent=s.abs;$('m_rate').textContent=s.rate.toFixed(1)+'%';
+}
+function monthlyStatsHtml(rs){
+  const k=$('ms')?.value||'t1',s=monthStats(rs,k);
+  return `<div class="card" style="margin-top:8px"><h3 style="text-align:center;color:var(--blue)">📊 إحصائيات ${MONTHS[k]}</h3>
+  <div class="st"><div>العدد الكلي<b>${s.total}</b></div><div>المشتركون<b>${s.part}</b></div>
+  <div>الناجحون<b>${s.ok}</b></div><div>الراسبون<b>${s.fail}</b></div>
+  <div>الغائبون<b>${s.abs}</b></div><div>النسبة<b>${arNum(s.rate.toFixed(1))}%</b></div></div></div>`;
+}
+function report(){
+  const t=$('rt').value;
+  const selectedClass=$('rc').value;
+  const selectedSection=$('rs').value;
+  const typeText=t==='all'?'جميع التلاميذ':(t==='pass'?'الناجحون فقط':'الراسبون فقط');
+  const classText=selectedClass==='الكل'?'كل الصفوف':selectedClass;
+  const sectionText=selectedSection==='الكل'?'كل الشعب':selectedSection;
+
+  const rs=filt(selectedClass,selectedSection,'').filter(r=>{
+    const y=calc(r)[2],p=y!==null&&y>=PASS;
+    return t==='all'||(t==='pass'?p:!p);
+  });
+
+  $('reportFilterInfo').textContent=`المحدد: ${classText} / ${sectionText} / ${typeText}`;
+  if(!rs.length){$('rep').innerHTML='';return toast('لا توجد سجلات مطابقة للصف والشعبة المحددين')}
+
+  const statKeys=['t1','t2','k1','k2','mf1','mid','adar','nisan','mf2','annual'];
+  const stats={};
+  statKeys.forEach(k=>stats[k]=monthStats(rs,k));
+
+  let h=`<h3 style="text-align:center;color:var(--blue)">تقرير درجات التلاميذ - 2025 - 2026</h3>`
+    +`<p style="text-align:center;font-weight:bold">الصف: ${classText} &nbsp; | &nbsp; الشعبة: ${sectionText} &nbsp; | &nbsp; ${typeText}</p>`
+    +`<table class="fullReport"><tr>
+      <th>ت</th><th>رقم التلميذ</th><th>اسم التلميذ</th>
+      <th>ت1</th><th>ت2</th><th>ك1</th><th>ك2</th><th>م ف1</th>
+      <th>نصف السنة</th><th>آذار</th><th>نيسان</th><th>م ف2</th>
+      <th>السعي السنوي</th><th>النتيجة</th>
+    </tr>`;
+
+  rs.forEach((r,i)=>{
+    const [a,b,y]=calc(r), p=y!==null&&y>=PASS;
+    const g=k=>absent(r,k)?'غـ':arNum(Math.round(Number(r[k])));
+    const f1=a===null?'—':arNum(Math.round(a));
+    const f2=b===null?'—':arNum(Math.round(b));
+    const annual=y===null?'—':arNum(Math.round(y));
+    const result=y===null?'—':(p?'ناجح':'راسب');
+
+    h+=`<tr>
+      <td>${arNum(i+1)}</td><td>${esc(r.num)}</td><td class="nm">${esc(r.name)}</td>
+      <td>${g('t1')}</td><td>${g('t2')}</td><td>${g('k1')}</td><td>${g('k2')}</td>
+      <td>${f1}</td><td>${g('mid')}</td><td>${g('adar')}</td><td>${g('nisan')}</td>
+      <td>${f2}</td><td class="${y===null?'':(p?'ok':'bad')}">${annual}</td>
+      <td class="${y===null?'bad':(p?'ok':'bad')}">${result}</td>
+    </tr>`;
+  });
+
+  // Statistics are placed directly under the student rows, aligned with every
+  // month/average column, like the requested printed form.
+  const statRows=[
+    ['العدد الكلي','total'],
+    ['المشتركون','part'],
+    ['الناجحون','ok'],
+    ['الراسبون','fail'],
+    ['الغائبون','abs'],
+    ['نسبة النجاح','rate']
+  ];
+
+  statRows.forEach(([label,key])=>{
+    h+=`<tr class="statRow">
+      <td colspan="3" class="statLabel">${label}</td>
+      ${statKeys.map(k=>{
+        const s=stats[k];
+        const v=key==='rate'?`${arNum(s.rate.toFixed(1))}%`:arNum(s[key]);
+        return `<td>${v}</td>`;
+      }).join('')}
+      <td></td>
+    </tr>`;
+  });
+
+  h+=`</table>`;
+  h+=`<div style="margin-top:8px;text-align:center;font-weight:bold">
+    العدد الكلي للتلاميذ: ${arNum(rs.length)}
+    &nbsp; | &nbsp; نسبة النجاح في السعي السنوي:
+    ${arNum(stats.annual.rate.toFixed(1))}%
+  </div>`;
+
+  $('rep').innerHTML=h;
+}
 function prn(){if(!$('rep').innerHTML)report();if(!$('rep').innerHTML)return;document.body.classList.add('pr');scrollTo(0,0);try{window.print()}catch(e){}toast('إن لم تظهر نافذة الطباعة: من قائمة المتصفح اختر مشاركة ثم طباعة')}
+function backupData(){
+  const data={version:1,createdAt:new Date().toISOString(),students:S};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='نسخة_احتياطية_بيانات_التلاميذ.json';document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);
+  toast('تم إنشاء النسخة الاحتياطية ✔');
+}
+function restoreData(input){
+  const file=input.files&&input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const data=JSON.parse(reader.result);
+      const rows=Array.isArray(data)?data:data.students;
+      if(!Array.isArray(rows))throw new Error('invalid');
+      const valid=rows.every(r=>r&&String(r.num||'').trim()&&String(r.name||'').trim());
+      if(!valid)throw new Error('invalid');
+      if(!confirm('سيتم استبدال البيانات الحالية بالنسخة الاحتياطية. هل تريد المتابعة؟')){input.value='';return}
+      S=rows.map(r=>({num:String(r.num).trim(),name:String(r.name).trim(),cls:r.cls||CL[4],sec:r.sec||SE[0],
+        t1:r.t1??null,t2:r.t2??null,k1:r.k1??null,k2:r.k2??null,mid:r.mid??null,adar:r.adar??null,nisan:r.nisan??null}));
+      sel=null;persist();render();monthlyStats();$('rep').innerHTML='';toast(`تم استرجاع ${S.length} سجل ✔`);
+    }catch(e){toast('ملف النسخة الاحتياطية غير صالح')}
+    input.value='';
+  };
+  reader.readAsText(file);
+}
 function exp(){$('csv').value=[F.join(',')].concat(S.map(r=>F.map(k=>'"'+String(r[k]).replace(/"/g,'""')+'"').join(','))).join('\n');$('csv').select();toast('انسخ النص من الحقل')}
 function imp(){const L=$('csv').value.split(/\r?\n/).filter(x=>x.trim());if(L.length<2)return toast('الصق ملف CSV أولاً');let c=0;
 L.slice(1).forEach(l=>{const p=l.split(',').map(x=>x.replace(/^"|"$/g,'').replace(/""/g,'"').trim());if(p.length<11)return;
-const r={num:p[0],name:p[1],cls:p[2],sec:p[3]};let ok=1;G.forEach((k,i)=>{r[k]=parseFloat(p[4+i]);if(isNaN(r[k]))ok=0});if(!ok||!r.num)return;
-const i=S.findIndex(x=>x.num===r.num);i>=0?S[i]=r:S.push(r);c++});persist();render();toast(`تم استيراد ${c} سجل`)}
+const r={num:p[0],name:p[1],cls:p[2],sec:p[3]};let ok=1;G.forEach((k,i)=>{const raw=(p[4+i]??'').trim();if(raw===''){r[k]=null;return}const v=parseFloat(raw);if(!Number.isFinite(v)||v<0||v>100){ok=0;return}r[k]=v});if(!ok||!r.num)return;
+const i=S.findIndex(x=>x.num===r.num);i>=0?S[i]=r:S.push(r);c++});persist();render();toast(`تم استيراد ${c} سجل`) }
 render();
-</script>
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
-  });
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 }
 </script>
 </body>
