@@ -1,0 +1,19 @@
+{
+  "name": "نظام إدارة بيانات التلاميذ",
+  "short_name": "إدارة التلاميذ",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#eaf2fb",
+  "theme_color": "#1f6fbf",
+  "orientation": "portrait",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

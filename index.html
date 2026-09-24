@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1f6fbf">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="إدارة التلاميذ">
+  <link rel="manifest" href="manifest.json">
+<title>نظام إدارة بيانات التلاميذ</title>
+<style>
+:root{--bg:#eaf2fb;--card:#fff;--tx:#1b2a3a;--bd:#9db7d3;--blue:#1f6fbf;--head:#cfe3f7;--in:#fff;--okc:#c9f0c9;--badc:#f8c9c9;--selc:#cfe3ff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a26;--card:#182636;--tx:#e6eef7;--bd:#3b5673;--head:#22405f;--in:#0f1a26;--okc:#1f5a2c;--badc:#6a2a2a;--selc:#264a75}}
+:root[data-theme="dark"]{--bg:#0f1a26;--card:#182636;--tx:#e6eef7;--bd:#3b5673;--head:#22405f;--in:#0f1a26;--okc:#1f5a2c;--badc:#6a2a2a;--selc:#264a75}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px Tahoma,Arial,sans-serif}
+header{background:var(--blue);color:#fff;padding:12px;text-align:center}
+header h1{margin:0;font-size:18px}header small{opacity:.9}
+.app{padding:8px;max-width:900px;margin:auto}
+.card{background:var(--card);border:1px solid var(--blue);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.card>h2{margin:0;background:var(--blue);color:#fff;font-size:15px;padding:7px 10px}
+.in{padding:10px}
+.g{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.g4{grid-template-columns:repeat(4,1fr)}
+label{font-size:12px;display:block;margin-bottom:2px}
+input,select,textarea{width:100%;padding:8px;border:1px solid var(--bd);border-radius:6px;background:var(--in);color:var(--tx);font:inherit;text-align:center}
+input[readonly]{opacity:.7}
+.full{grid-column:1/-1}
+button{border:0;border-radius:6px;padding:9px 12px;color:#fff;font:bold 14px Tahoma,Arial;background:var(--blue)}
+.bar{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.bar button{flex:1;min-width:30%}
+.gr{background:#1e8449}.rd{background:#c0392b}.gy{background:#7f8c8d}
+.sc{overflow-x:auto}
+table{border-collapse:collapse;font-size:12px;width:max-content;min-width:100%}
+th,td{border:1px solid var(--bd);padding:5px 7px;text-align:center;white-space:nowrap}
+th{background:var(--head)}.nm{text-align:right}
+.ok{background:var(--okc)}.bad{background:var(--badc)}tr.sel td{background:var(--selc)}
+.st{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:10px}
+.st div{border-radius:8px;padding:6px 2px;text-align:center;font-size:11px;background:var(--head)}
+.st b{display:block;font-size:19px;color:var(--blue)}
+.ck{display:flex;gap:6px;align-items:center;margin-top:8px}.ck input{width:auto}
+ul{margin:0;padding:8px 24px;font-size:13px;line-height:1.8}
+#toast{position:fixed;bottom:calc(14px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:9px 16px;border-radius:20px;display:none;z-index:9}
+textarea{text-align:left;direction:ltr;height:110px;font-size:12px}
+body.pr .app>*:not(#repcard),body.pr header,body.pr #repcard .in>:not(#rep){display:none!important}body.pr .card{border:0}
+#back{display:none;position:fixed;top:calc(8px + env(safe-area-inset-top,0px));left:8px;z-index:9}body.pr #back{display:block}
+@media print{#back{display:none!important}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<header><h1>🎓 نظام إدارة بيانات التلاميذ</h1><small>العام الدراسي 2025 - 2026 · معاً من أجل تعليم أفضل</small></header>
+<div class="app">
+
+<div class="card"><h2>👤 إدخال بيانات التلميذ</h2><div class="in">
+<div class="g">
+<div><label>رقم التلميذ</label><input id="num" inputmode="numeric"></div>
+<div><label>اسم التلميذ</label><input id="name"></div>
+<div><label>الصف</label><select id="cls"></select></div>
+<div><label>الشعبة</label><select id="sec"></select></div>
+</div>
+<p style="margin:10px 0 4px;color:var(--blue);font-weight:bold">الدرجات</p>
+<div class="g g4">
+<div><label>ت1</label><input id="t1" type="number" inputmode="decimal"></div>
+<div><label>ت2</label><input id="t2" type="number" inputmode="decimal"></div>
+<div><label>ك1</label><input id="k1" type="number" inputmode="decimal"></div>
+<div><label>ك2</label><input id="k2" type="number" inputmode="decimal"></div>
+<div><label>م ف1</label><input id="s1" readonly></div>
+<div><label>نصف السنة</label><input id="mid" type="number" inputmode="decimal"></div>
+<div><label>اذار</label><input id="adar" type="number" inputmode="decimal"></div>
+<div><label>نيسان</label><input id="nisan" type="number" inputmode="decimal"></div>
+<div><label>م ف2</label><input id="s2" readonly></div>
+<div class="full"><label>السعي السنوي</label><input id="yr" readonly></div>
+</div>
+<div class="bar"><button onclick="saveS()">💾 حفظ</button><button class="gy" onclick="clr()">◇ مسح</button><button onclick="edit()">✏️ تعديل المحدد</button><button class="rd" id="del" onclick="two(this,delS,'🗑️ حذف المحدد')">🗑️ حذف المحدد</button></div>
+</div></div>
+
+<div class="card"><h2>🔍 البحث وخيارات متقدمة</h2><div class="in"><div class="g">
+<div><label>البحث في</label><select id="qf"><option value="name">اسم التلميذ</option><option value="num">رقم التلميذ</option></select></div>
+<div><label>نص البحث</label><input id="q" oninput="render()"></div>
+<div><label>الصف</label><select id="fc" onchange="render()"></select></div>
+<div><label>الشعبة</label><select id="fs" onchange="render()"></select></div>
+</div>
+<div class="bar"><button class="gr" onclick="resetV()">🔄 إعادة عرض</button><button class="rd" id="delall" onclick="two(this,delAll,'🧹 حذف الكل')">🧹 حذف الكل</button></div>
+<p style="margin:8px 0 0">عدد السجلات المعروضة: <b id="cnt">0</b></p></div></div>
+
+<div class="card"><h2>☰ بيانات التلاميذ (اضغط على صف لتحديده)</h2><div class="sc" id="tb"></div></div>
+
+<div class="card"><h2>📊 إحصائيات الخلاصة</h2><div class="st">
+<div>العدد الكلي<b id="s_total">0</b></div><div>المشتركون<b id="s_part">0</b></div><div>الناجحون<b id="s_ok">0</b></div><div>الراسبون<b id="s_fail">0</b></div><div>نسبة النجاح<b id="s_rate">0%</b></div></div></div>
+
+<div class="card" id="repcard"><h2>📄 تقرير الدرجات</h2><div class="in"><div class="g">
+<div class="full"><label>نوع التقرير</label><select id="rt"><option value="all">جميع التلاميذ</option><option value="pass">الناجحون فقط</option><option value="fail">الراسبون فقط</option></select></div>
+<div><label>الصف</label><select id="rc"></select></div><div><label>الشعبة</label><select id="rs"></select></div></div>
+<div class="bar"><button class="rd" onclick="report()">📕 عرض التقرير</button><button class="gy" onclick="prn()">🖨️ طباعة / PDF</button></div>
+<div id="rep" class="sc" style="margin-top:8px"></div></div></div>
+
+<div class="card"><h2>📥📤 استيراد وتصدير (إكسل / CSV)</h2><div class="in">
+<textarea id="csv" placeholder="للاستيراد: الصق هنا محتوى ملف CSV ثم اضغط استيراد"></textarea>
+<div class="bar"><button class="gr" onclick="exp()">📤 تصدير</button><button class="gr" onclick="imp()">📥 استيراد</button></div>
+<p style="font-size:12px;margin:6px 0 0">التصدير يكتب البيانات في الحقل أعلاه: انسخها واحفظها كنسخة احتياطية أو الصقها في إكسل.</p></div></div>
+
+<div class="card"><h2>ⓘ ملاحظات</h2><ul>
+<li>درجة النجاح من 49.5 فما فوق.</li>
+<li>معدل الفصل الأول = (ت1 + ت2 + ك1 + ك2) ÷ 4</li>
+<li>معدل الفصل الثاني = (اذار + نيسان) ÷ 2</li>
+<li>السعي السنوي = (م.فصل أول + نصف السنة + م.فصل ثان) ÷ 3</li></ul></div>
+</div>
+<button id="back" class="gy" onclick="document.body.classList.remove('pr')">↩ رجوع</button>
+<div id="toast"></div>
+<script>
+const PASS=49.5,KEY='students_v1',CL=['الأول','الثاني','الثالث','الرابع','الخامس','السادس'],SE=['أ','ب','ج','د'];
+const G=['t1','t2','k1','k2','mid','adar','nisan'],F=['num','name','cls','sec',...G];
+const H=['ت','رقم التلميذ','اسم التلميذ','الصف','الشعبة','ت1','ت2','ك1','ك2','م ف1','نصف السنة','اذار','نيسان','م ف2','السعي السنوي','النتيجة'];
+let S=[],sel=null;
+try{S=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){}
+const $=i=>document.getElementById(i);
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('تعذّر الحفظ في المتصفح')}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',2500)}
+const calc=r=>{const a=(r.t1+r.t2+r.k1+r.k2)/4,b=(r.adar+r.nisan)/2;return[a,b,(a+r.mid+b)/3]};
+function opts(id,list,all){$(id).innerHTML=(all?'<option>الكل</option>':'')+list.map(x=>`<option>${x}</option>`).join('')}
+opts('cls',CL);opts('sec',SE);opts('fc',CL,1);opts('fs',SE,1);opts('rc',CL,1);opts('rs',SE,1);$('cls').value=CL[4];
+G.forEach(k=>$(k).addEventListener('input',prev));
+function prev(){const r={};for(const k of G){const v=parseFloat($(k).value);if(isNaN(v)){['s1','s2','yr'].forEach(x=>$(x).value='');return}r[k]=v}
+const[a,b,y]=calc(r);$('s1').value=a.toFixed(1);$('s2').value=b.toFixed(1);$('yr').value=y.toFixed(1)}
+function saveS(){const r={num:$('num').value.trim(),name:$('name').value.trim(),cls:$('cls').value,sec:$('sec').value};
+if(!r.num||!r.name)return toast('أدخل رقم التلميذ واسمه');
+for(const k of G){const v=parseFloat($(k).value);if(isNaN(v)||v<0||v>100)return toast('الدرجات يجب أن تكون بين 0 و 100');r[k]=v}
+const i=S.findIndex(x=>x.num===r.num);i>=0?S[i]=r:S.push(r);persist();clr();render();toast('تم الحفظ ✔')}
+function clr(){['num','name',...G,'s1','s2','yr'].forEach(k=>$(k).value='');sel=null;render()}
+function edit(){const r=S.find(x=>x.num===sel);if(!r)return toast('اختر تلميذاً من الجدول أولاً');F.forEach(k=>$(k).value=r[k]);prev();scrollTo(0,0)}
+function delS(){if(!sel)return toast('اختر تلميذاً أولاً');S=S.filter(x=>x.num!==sel);sel=null;persist();render()}
+function delAll(){S=[];sel=null;persist();render()}
+function two(b,fn,label){if(b._w){clearTimeout(b._t);b._w=0;b.textContent=label;return fn()}b._w=1;b.textContent='اضغط مرة ثانية للتأكيد';b._t=setTimeout(()=>{b._w=0;b.textContent=label},3000)}
+function resetV(){$('q').value='';$('fc').value='الكل';$('fs').value='الكل';render()}
+function filt(fc,fs,q){return S.filter(r=>(fc==='الكل'||r.cls===fc)&&(fs==='الكل'||r.sec===fs)&&(!q||String(r[$('qf').value]).includes(q))).sort((a,b)=>a.num.localeCompare(b.num,undefined,{numeric:true}))}
+function tbl(rs,click){let h='<table><tr>'+H.map(x=>`<th>${x}</th>`).join('')+'</tr>';
+rs.forEach((r,i)=>{const[a,b,y]=calc(r),p=y>=PASS,g=k=>`<td class="${r[k]<50?'bad':''}">${r[k]}</td>`;
+h+=`<tr data-n="${esc(r.num)}" class="${click&&r.num===sel?'sel':''}"><td>${i+1}</td><td>${esc(r.num)}</td><td class="nm">${esc(r.name)}</td><td>${r.cls}</td><td>${r.sec}</td>${g('t1')}${g('t2')}${g('k1')}${g('k2')}<td>${a.toFixed(1)}</td>${g('mid')}${g('adar')}${g('nisan')}<td>${b.toFixed(1)}</td><td class="${p?'ok':'bad'}">${y.toFixed(1)}</td><td class="${p?'ok':'bad'}">${p?'ناجح':'راسب'}</td></tr>`});
+return h+'</table>'}
+function stats(rs,pre){const n=rs.length,ok=rs.filter(r=>calc(r)[2]>=PASS).length;
+return{n,ok}}
+function render(){const rs=filt($('fc').value,$('fs').value,$('q').value.trim());$('tb').innerHTML=tbl(rs,1);
+const{n,ok}=stats(rs);$('cnt').textContent=n;$('s_total').textContent=n;$('s_part').textContent=n;$('s_ok').textContent=ok;$('s_fail').textContent=n-ok;$('s_rate').textContent=(n?ok/n*100:0).toFixed(1)+'%'}
+$('tb').addEventListener('click',e=>{const tr=e.target.closest('tr[data-n]');if(tr){sel=tr.dataset.n;render()}});
+function report(){const t=$('rt').value;const rs=filt($('rc').value,$('rs').value,'').filter(r=>{const p=calc(r)[2]>=PASS;return t==='all'||(t==='pass'?p:!p)});
+if(!rs.length){$('rep').innerHTML='';return toast('لا توجد سجلات مطابقة')}
+const{n,ok}=stats(rs);$('rep').innerHTML=`<h3 style="text-align:center;color:var(--blue)">تقرير درجات التلاميذ - 2025 - 2026</h3>`+tbl(rs,0)+`<p><b>العدد: ${n} | الناجحون: ${ok} | الراسبون: ${n-ok} | نسبة النجاح: ${(ok/n*100).toFixed(1)}%</b></p>`}
+function prn(){if(!$('rep').innerHTML)report();if(!$('rep').innerHTML)return;document.body.classList.add('pr');scrollTo(0,0);try{window.print()}catch(e){}toast('إن لم تظهر نافذة الطباعة: من قائمة المتصفح اختر مشاركة ثم طباعة')}
+function exp(){$('csv').value=[F.join(',')].concat(S.map(r=>F.map(k=>'"'+String(r[k]).replace(/"/g,'""')+'"').join(','))).join('\n');$('csv').select();toast('انسخ النص من الحقل')}
+function imp(){const L=$('csv').value.split(/\r?\n/).filter(x=>x.trim());if(L.length<2)return toast('الصق ملف CSV أولاً');let c=0;
+L.slice(1).forEach(l=>{const p=l.split(',').map(x=>x.replace(/^"|"$/g,'').replace(/""/g,'"').trim());if(p.length<11)return;
+const r={num:p[0],name:p[1],cls:p[2],sec:p[3]};let ok=1;G.forEach((k,i)=>{r[k]=parseFloat(p[4+i]);if(isNaN(r[k]))ok=0});if(!ok||!r.num)return;
+const i=S.findIndex(x=>x.num===r.num);i>=0?S[i]=r:S.push(r);c++});persist();render();toast(`تم استيراد ${c} سجل`)}
+render();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
